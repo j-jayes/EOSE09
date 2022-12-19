@@ -1,0 +1,31 @@
+---
+title: "Join data to roses wolf"
+format: html
+---
+
+## Purpose
+
+Join data from eurostat to Roses Wolf.
+
+```{r}
+library(tidyverse)
+
+df <- read_rds("data/regions_illustrated.rds")
+
+rw <- haven::read_dta("data/RosesWolf_Regional_Fahad.dta")
+```
+
+
+When are Nuts 2 regions joined together??
+
+```{r}
+rw %>% 
+  filter(str_detect(nuts, "\\+")) %>% 
+  distinct(nuts)
+```
+
+```{r}
+df %>% 
+  filter(code %in% c("AT12", "AT13"))
+```
+

@@ -1,0 +1,70 @@
+---
+title: "Ingest"
+format: html
+---
+## Purpose
+
+Ingest and collect together the data from [here](https://ec.europa.eu/eurostat/cache/RCI/#?vis=nuts2.scitech&lang=en)
+
+
+
+```{r}
+library(tidyverse)
+
+df <- readxl::read_excel(here::here("data", "agriculture.xlsx"))
+
+get_data <- function(f_name, sheet_name) {
+  message("Getting data from ", f_name)
+  
+  df <- readxl::read_excel(f_name)
+  
+  df %>%
+    select(-sortOrder) %>%
+    pivot_longer(-c("Region", "Code", "Country"), names_to = "indicator") %>%
+    mutate(
+      # remove brackets
+      value = str_remove(value, "\\(.*"),
+      # remove spaces
+      value = str_remove_all(value, " "),
+    ) %>%
+    mutate(value = case_when(
+      # replace pct sign
+      str_detect(value, "%") ~ parse_number(value) / 100,
+      # otherwise go numeric
+      TRUE ~ as.numeric(value)
+    )) %>% 
+    mutate(stat_domain = sheet_name,
+           year = 2015)
+}
+
+list_of_files <- list.files(here::here("data"), pattern = ".xlsx")
+
+tbl_of_files <- list_of_files %>% 
+  as_tibble() %>% 
+  mutate(file_path = str_c("data/", value),
+         value = str_remove(value, "\\.xlsx")) %>% 
+  rename(sheet = value)
+
+tbl_of_files <- tbl_of_files %>% 
+  mutate(data = pmap(list(file_path, sheet), get_data))
+
+df <- tbl_of_files %>% 
+  unnest(data)
+```
+
+
+```{r}
+df <- df %>%
+  select(-c(sheet, file_path)) %>%
+  mutate(
+    stat_domain = str_replace_all(stat_domain, "_", " "),
+    stat_domain = str_to_title(stat_domain)
+  ) %>% 
+  janitor::clean_names()
+
+df <- df %>%
+  arrange(code)
+
+df %>% write_rds("data/regions_illustrated.rds", compress = "gz")
+```
+

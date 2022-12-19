@@ -1,0 +1,40 @@
+---
+title: "EDA"
+format: html
+---
+
+## Purpose
+
+Show what series we have
+
+```{r}
+library(tidyverse)
+library(sf)
+
+df <- read_rds("data/regions_illustrated.rds") %>% 
+  rename(nuts_code = code)
+  
+map <- read_rds("data/map_simple.rds")
+```
+
+```{r}
+df_map <- df %>% 
+  inner_join(map)
+```
+
+```{r}
+library(gt)
+
+df_map %>%
+  count(indicator, stat_domain) %>%
+  select(-n) %>%
+  group_by(stat_domain) %>%
+  gt()
+
+df_map %>% 
+  filter()
+  filter(indicator %in% c("All causes of death (crude death rate)"))
+  ggplot(aes(value, year)) +
+  geom_point()
+```
+
