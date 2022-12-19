@@ -58,9 +58,27 @@ df <- df %>%
   select(-c(sheet, file_path)) %>%
   mutate(
     stat_domain = str_replace_all(stat_domain, "_", " "),
-    stat_domain = str_to_title(stat_domain)
+    stat_domain = str_to_title(stat_domain),
+    indicator = str_squish(indicator)
   ) %>% 
   janitor::clean_names()
+
+series_to_distinct <- c(
+  "Population (persons)",
+  "Population density (persons per square kilometre)",
+  "Employment rate (% of population aged 20-64)",
+  "Unemployment rate (% of labour force aged 15-74)",
+  "Gross domestic product (PPS per inhabitant)",
+  "Gross domestic product (PPS per inhabitant in % of the EU-27 average)"
+)
+
+df_to_join <- df %>% 
+  filter(indicator %in% series_to_distinct) %>% 
+  distinct(region, code, country, indicator, .keep_all = T)
+
+df <- df %>% 
+  filter(!indicator %in% series_to_distinct) %>% 
+  bind_rows(df_to_join)
 
 df <- df %>%
   arrange(code)

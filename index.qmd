@@ -1,13 +1,17 @@
 ---
-title: "Rosés-Wolf database on regional GDP"
+title: "Supplementing the Rosés-Wolf database on regional GDP"
 format: html
+execute: 
+  echo: false
+  message: false
+  warning: false
 ---
 
 ## Purpose
 
 We want to supplement the database on regional GDP that we are going to provide to students.
 
-I have collected a whole range of data at the NUTS2 level (though it is only for the year 2015.
+I have collected a range of data at the NUTS2 level (though it is only for the year 2015).
 
 They are shown in the table below, where the header is coloured blue for the category:
 
