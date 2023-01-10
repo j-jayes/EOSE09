@@ -1,7 +1,9 @@
 ---
-title: "EOSEO9 Regiaonl Economics: Stata Lab 1"
+title: "EOSEO9 Regiaonl Economics: Stata Lab 1 Mapping Growth"
 author: Vinzent Ostermeyer, adapted Jonathan Jayes
-format: html
+format: 
+  html:
+    code-overflow: wrap
 execute: 
   eval: false
 ---
@@ -10,7 +12,7 @@ execute:
 
 One goal of this course is to teach students how to identify a good map -- one which is clear, informative and attractive -- and familiarise students with the commands which allow the creation of these maps in Stata.
 
-In addition, your lab paper (due March 3rd) requires that you include at least 6 maps, so it is worth concentrating in the labs and making use of these resources!
+In addition, your lab paper (due March 3rd) requires that you include at least 6 maps, so it is worth concentrating in the labs and making use of these resources.
 
 This document is intended to allow you to keep up with the Stata Lab 1 that we will work through in class.
 
@@ -18,17 +20,13 @@ It will include the commands the we use and the output, as well as some hints an
 
 ## Getting started
 
+Given that you have encountered Stata previously in your studies, I will not spend undue time explaining the basics. If you want to brush up on Stata's syntax, I reccomend having a look at [these slides](https://github.com/j-jayes/EOSE09/blob/b8444dd95783f4434ab63c4ad28b0f3033d4fd0a/resources/StataTutorial.pdf) from Oscar Torres-Reyna, or [this set of Youtube videos](https://www.youtube.com/watch?v=oXsPgQe-aqs&ab_channel=SebastianWaiEcon) From Sebastian Wai.
+
 ### Install additional programs and set-up
 
-I will assume that you are familiar with the 
-
-First we need to install the packages in Stata that we will make use of.
+First we need to install the packages in Stata that we will make use of. Please do this before our lab session in order to save time.
 
 We use the `ssc install` command, as follows:
-
-:::{.callout-note}
-To run do-files click the "run-button" or highlight the lines of code and hit ctrl + D (Windows) or shift + cmd + D (Mac)
-:::
 
 ```
 ssc install spmap, replace
@@ -41,15 +39,18 @@ ssc install palettes, replace
 ssc install egenmore, replace
 ssc install outreg2, replace
 ```
+:::{.callout-note}
+To run do-files click the "run-button" or highlight the lines of code and hit ctrl + D (Windows) or shift + cmd + D (Mac)
+:::
 
 Running the command should produce output in the console that looks like this:
 
 <blockquote>
 
 | **. ssc install geo2xy, replace**
-|   checking geo2xy consistency and verifying not already installed...
-|   installing into c:\ado\plus\... installation complete.
-|   ...
+|   `checking geo2xy consistency and verifying not already installed...`
+|   `installing into c:\ado\plus\... installation complete.`
+|   `...`
 
 </blockquote>
 
@@ -77,7 +78,7 @@ If you have a Mac, it will look something like this:
 
 `Users/Jonathan/Documents/Stata-lab/`
 
-If you want to change the settings on your Mac to display the file path in your **Finder** window, follow [this link](https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868)
+If you want to change the settings on your Mac to display the file path in your **Finder** window, follow [this link](https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868).
 
 To tell Stata that this is where I want it to look for my files, I'll use the `cd` (current directory) command in my do-file.
 
@@ -92,6 +93,8 @@ If successful, in the console I will see the following output:
 | **. `cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory`**
 |   `C:\Users\User\Documents\Recon\EOSE09\stata_files`
 
+</blockquote>
+
 You can call the help window by typing `help` into the console, and set your Stata version for compatability reasons with the `version` command, like so:
 
 ```
@@ -101,4 +104,13 @@ version 16.1 // version control
 
 ## Importing the Roses-Wolf dataset from Excel into Stata
 
-At the moment, the database we want to use to draw out maps.
+At the moment, the database we want to use to draw out maps is in an excel sheet.
+
+It has many tabs, and some lines are filled with headings before the data begins, as show here:
+
+
+
+```
+import excel using RosesWolf_RegionalGDP_v6.xlsx, sheet("A1 Regional GDP") firstrow cellrange(A6:O179) clear // import Excel sheet
+rename (D E F G H I J K L M N O) (year_1900 year_1910 year_1925 year_1938 year_1950 year_1960 year_1970 year_1980 year_1990 year_2000 year_2010 year_2015)
+```

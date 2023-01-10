@@ -8,7 +8,7 @@
 
 <meta name="author" content="Vinzent Ostermeyer, adapted Jonathan Jayes">
 
-<title>EOSEO9 Regiaonl Economics: Stata Lab 1</title>
+<title>EOSEO9 Regiaonl Economics: Stata Lab 1 Mapping Growth</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -46,7 +46,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">EOSEO9 Regiaonl Economics: Stata Lab 1</h1>
+<h1 class="title">EOSEO9 Regiaonl Economics: Stata Lab 1 Mapping Growth</h1>
 </div>
 
 
@@ -69,15 +69,27 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="purpose" class="level2">
 <h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>One goal of this course is to teach students how to identify a good map – one which is clear, informative and attractive – and familiarise students with the commands which allow the creation of these maps in Stata.</p>
+<p>In addition, your lab paper (due March 3rd) requires that you include at least 6 maps, so it is worth concentrating in the labs and making use of these resources.</p>
 <p>This document is intended to allow you to keep up with the Stata Lab 1 that we will work through in class.</p>
 <p>It will include the commands the we use and the output, as well as some hints and tips that will be useful during your projects, I hope.</p>
 </section>
 <section id="getting-started" class="level2">
 <h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
+<p>Given that you have encountered Stata previously in your studies, I will not spend undue time explaining the basics. If you want to brush up on Stata’s syntax, I reccomend having a look at <a href="https://github.com/j-jayes/EOSE09/blob/b8444dd95783f4434ab63c4ad28b0f3033d4fd0a/resources/StataTutorial.pdf">these slides</a> from Oscar Torres-Reyna, or <a href="https://www.youtube.com/watch?v=oXsPgQe-aqs&amp;ab_channel=SebastianWaiEcon">this set of Youtube videos</a> From Sebastian Wai.</p>
 <section id="install-additional-programs-and-set-up" class="level3">
 <h3 class="anchored" data-anchor-id="install-additional-programs-and-set-up">Install additional programs and set-up</h3>
-<p>First we need to install the packages in Stata that we will make use of.</p>
+<p>First we need to install the packages in Stata that we will make use of. Please do this before our lab session in order to save time.</p>
 <p>We use the <code>ssc install</code> command, as follows:</p>
+<pre><code>ssc install spmap, replace
+ssc install geo2xy, replace
+ssc install shp2dta, replace
+ssc install schemepack, replace
+ssc install scheme-burd, replace
+ssc install colrspace, replace
+ssc install palettes, replace
+ssc install egenmore, replace
+ssc install outreg2, replace</code></pre>
 <div class="callout-note callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -91,21 +103,12 @@ Note
 <p>To run do-files click the “run-button” or highlight the lines of code and hit ctrl + D (Windows) or shift + cmd + D (Mac)</p>
 </div>
 </div>
-<pre><code>ssc install spmap, replace
-ssc install geo2xy, replace
-ssc install shp2dta, replace
-ssc install schemepack, replace
-ssc install scheme-burd, replace
-ssc install colrspace, replace
-ssc install palettes, replace
-ssc install egenmore, replace
-ssc install outreg2, replace</code></pre>
 <p>Running the command should produce output in the console that looks like this:</p>
 <blockquote class="blockquote">
 <p><strong>. ssc install geo2xy, replace</strong><br>
-&nbsp;&nbsp;checking geo2xy consistency and verifying not already installed…<br>
-&nbsp;&nbsp;installing into c:... installation complete.<br>
-&nbsp;&nbsp;…</p>
+&nbsp;&nbsp;<code>checking geo2xy consistency and verifying not already installed...</code><br>
+&nbsp;&nbsp;<code>installing into c:\ado\plus\... installation complete.</code><br>
+&nbsp;&nbsp;<code>...</code></p>
 </blockquote>
 <div class="callout-tip callout callout-style-default callout-captioned">
 <div class="callout-header d-flex align-content-center">
@@ -130,16 +133,25 @@ always comment your code
 <p><code>C:/Users/User/Documents/Recon/EOSE09/stata_files/</code></p>
 <p>If you have a Mac, it will look something like this:</p>
 <p><code>Users/Jonathan/Documents/Stata-lab/</code></p>
-<p>If you want to change the settings on your Mac to display the file path in your <strong>Finder</strong> window, follow <a href="https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868">this link</a></p>
+<p>If you want to change the settings on your Mac to display the file path in your <strong>Finder</strong> window, follow <a href="https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868">this link</a>.</p>
 <p>To tell Stata that this is where I want it to look for my files, I’ll use the <code>cd</code> (current directory) command in my do-file.</p>
 <pre><code>cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory</code></pre>
 <p>If successful, in the console I will see the following output:</p>
 <blockquote class="blockquote">
-<p><strong><code>cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory</code></strong><br>
-&nbsp;&nbsp;<code>.C:\Users\User\Documents\Recon\EOSE09\stata_files</code></p>
-<p>help // Stata’s help function; cf.&nbsp;also the web or Statalist version 16.1 // version control ```</p>
-</blockquote></section>
+<p><strong>. <code>cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory</code></strong><br>
+&nbsp;&nbsp;<code>C:\Users\User\Documents\Recon\EOSE09\stata_files</code></p>
+</blockquote>
+<p>You can call the help window by typing <code>help</code> into the console, and set your Stata version for compatability reasons with the <code>version</code> command, like so:</p>
+<pre><code>help // Stata's help function; cf. also the web or Statalist
+version 16.1 // version control</code></pre>
 </section>
+</section>
+</section>
+<section id="importing-the-roses-wolf-dataset-from-excel-into-stata" class="level2">
+<h2 class="anchored" data-anchor-id="importing-the-roses-wolf-dataset-from-excel-into-stata">Importing the Roses-Wolf dataset from Excel into Stata</h2>
+<p>At the moment, the database we want to use to draw out maps is in an excel sheet.</p>
+<pre><code>import excel using RosesWolf_RegionalGDP_v6.xlsx, sheet("A1 Regional GDP") firstrow cellrange(A6:O179) clear // import Excel sheet
+rename (D E F G H I J K L M N O) (year_1900 year_1910 year_1925 year_1938 year_1950 year_1960 year_1970 year_1980 year_1990 year_2000 year_2010 year_2015)</code></pre>
 </section>
 
 </main>
