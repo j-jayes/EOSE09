@@ -1,0 +1,12 @@
+{\rtf1\fs24
+\trowd\trgaph75\trleft-75\intbl\trqc\clbrdrt\brdrs\cellx7776\clbrdrt\brdrs\cellx8352\clbrdrt\brdrs\cellx9216\clbrdrt\brdrs\cellx10080
+\ql \cell\qc (1)\cell\qc (2)\cell\qc (3)\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx7776\cellx8352\cellx9216\cellx10080
+\trowd\trgaph75\trleft-75\trqc\clbrdrb\brdrs\cellx7776\clbrdrb\brdrs\cellx8352\clbrdrb\brdrs\cellx9216\clbrdrb\brdrs\cellx10080
+\ql VARIABLES\cell\qc N\cell\qc mean\cell\qc sd\cell\row
+\trowd\trgaph75\trleft-75\trqc\cellx7776\cellx8352\cellx9216\cellx10080
+\ql \cell\qc \cell\qc \cell\qc \cell\row
+\ql Regional GDP per Capita in 1990 International Dollars\cell\qc 172\cell\qc 4,514\cell\qc 1,867\cell\row
+\trowd\trgaph75\trleft-75\trqc\trbrdrb\brdrs\clbrdrb\brdrs\cellx7776\clbrdrb\brdrs\cellx8352\clbrdrb\brdrs\cellx9216\clbrdrb\brdrs\cellx10080
+\ql \cell\qc \cell\qc \cell\qc \cell\row
+}

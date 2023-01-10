@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.237">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Vinzent Ostermeyer, adapted Jonathan Jayes">
+
+<title>EOSEO9 Regiaonl Economics: Stata Lab 1</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="04-Stata-Lab-1_files/libs/clipboard/clipboard.min.js"></script>
+<script src="04-Stata-Lab-1_files/libs/quarto-html/quarto.js"></script>
+<script src="04-Stata-Lab-1_files/libs/quarto-html/popper.min.js"></script>
+<script src="04-Stata-Lab-1_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="04-Stata-Lab-1_files/libs/quarto-html/anchor.min.js"></script>
+<link href="04-Stata-Lab-1_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="04-Stata-Lab-1_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="04-Stata-Lab-1_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="04-Stata-Lab-1_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="04-Stata-Lab-1_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">EOSEO9 Regiaonl Economics: Stata Lab 1</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Vinzent Ostermeyer, adapted Jonathan Jayes </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="purpose" class="level2">
+<h2 class="anchored" data-anchor-id="purpose">Purpose</h2>
+<p>This document is intended to allow you to keep up with the Stata Lab 1 that we will work through in class.</p>
+<p>It will include the commands the we use and the output, as well as some hints and tips that will be useful during your projects, I hope.</p>
+</section>
+<section id="getting-started" class="level2">
+<h2 class="anchored" data-anchor-id="getting-started">Getting started</h2>
+<section id="install-additional-programs-and-set-up" class="level3">
+<h3 class="anchored" data-anchor-id="install-additional-programs-and-set-up">Install additional programs and set-up</h3>
+<p>First we need to install the packages in Stata that we will make use of.</p>
+<p>We use the <code>ssc install</code> command, as follows:</p>
+<div class="callout-note callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>To run do-files click the “run-button” or highlight the lines of code and hit ctrl + D (Windows) or shift + cmd + D (Mac)</p>
+</div>
+</div>
+<pre><code>ssc install spmap, replace
+ssc install geo2xy, replace
+ssc install shp2dta, replace
+ssc install schemepack, replace
+ssc install scheme-burd, replace
+ssc install colrspace, replace
+ssc install palettes, replace
+ssc install egenmore, replace
+ssc install outreg2, replace</code></pre>
+<p>Running the command should produce output in the console that looks like this:</p>
+<blockquote class="blockquote">
+<p><strong>. ssc install geo2xy, replace</strong><br>
+&nbsp;&nbsp;checking geo2xy consistency and verifying not already installed…<br>
+&nbsp;&nbsp;installing into c:... installation complete.<br>
+&nbsp;&nbsp;…</p>
+</blockquote>
+<div class="callout-tip callout callout-style-default callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+always comment your code
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>In Stata you can comment your code in one line</p>
+<p><code>// like so</code></p>
+<p>Or if you want to write a longer string</p>
+<p><code>/*You can put your longer string of text inside a set of slashes and stars*/</code></p>
+</div>
+</div>
+<section id="setting-a-directory" class="level4">
+<h4 class="anchored" data-anchor-id="setting-a-directory">Setting a directory</h4>
+<p>It is useful to put all of your work inside a specific file directory. This way, Stata knows where to look for your files and where to save output, like regression tables.</p>
+<p>The path to my folder where I have the files for this lab is:</p>
+<p><code>C:/Users/User/Documents/Recon/EOSE09/stata_files/</code></p>
+<p>If you have a Mac, it will look something like this:</p>
+<p><code>Users/Jonathan/Documents/Stata-lab/</code></p>
+<p>If you want to change the settings on your Mac to display the file path in your <strong>Finder</strong> window, follow <a href="https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868">this link</a></p>
+<p>To tell Stata that this is where I want it to look for my files, I’ll use the <code>cd</code> (current directory) command in my do-file.</p>
+<pre><code>cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory</code></pre>
+<p>If successful, in the console I will see the following output:</p>
+<blockquote class="blockquote">
+<p><strong><code>cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory</code></strong><br>
+&nbsp;&nbsp;<code>.C:\Users\User\Documents\Recon\EOSE09\stata_files</code></p>
+<p>help // Stata’s help function; cf.&nbsp;also the web or Statalist version 16.1 // version control ```</p>
+</blockquote></section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

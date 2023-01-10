@@ -1,0 +1,104 @@
+---
+title: "EOSEO9 Regiaonl Economics: Stata Lab 1"
+author: Vinzent Ostermeyer, adapted Jonathan Jayes
+format: html
+execute: 
+  eval: false
+---
+
+## Purpose
+
+One goal of this course is to teach students how to identify a good map -- one which is clear, informative and attractive -- and familiarise students with the commands which allow the creation of these maps in Stata.
+
+In addition, your lab paper (due March 3rd) requires that you include at least 6 maps, so it is worth concentrating in the labs and making use of these resources!
+
+This document is intended to allow you to keep up with the Stata Lab 1 that we will work through in class.
+
+It will include the commands the we use and the output, as well as some hints and tips that will be useful during your projects, I hope.
+
+## Getting started
+
+### Install additional programs and set-up
+
+I will assume that you are familiar with the 
+
+First we need to install the packages in Stata that we will make use of.
+
+We use the `ssc install` command, as follows:
+
+:::{.callout-note}
+To run do-files click the "run-button" or highlight the lines of code and hit ctrl + D (Windows) or shift + cmd + D (Mac)
+:::
+
+```
+ssc install spmap, replace
+ssc install geo2xy, replace
+ssc install shp2dta, replace
+ssc install schemepack, replace
+ssc install scheme-burd, replace
+ssc install colrspace, replace
+ssc install palettes, replace
+ssc install egenmore, replace
+ssc install outreg2, replace
+```
+
+Running the command should produce output in the console that looks like this:
+
+<blockquote>
+
+| **. ssc install geo2xy, replace**
+|   checking geo2xy consistency and verifying not already installed...
+|   installing into c:\ado\plus\... installation complete.
+|   ...
+
+</blockquote>
+
+:::{.callout-tip}
+### always comment your code
+
+In Stata you can comment your code in one line
+
+`// like so`
+
+Or if you want to write a longer string
+
+`/*You can put your longer string of text inside a set of slashes and stars*/`
+:::
+
+#### Setting a directory
+
+It is useful to put all of your work inside a specific file directory. This way, Stata knows where to look for your files and where to save output, like regression tables.
+
+The path to my folder where I have the files for this lab is:
+
+`C:/Users/User/Documents/Recon/EOSE09/stata_files/`
+
+If you have a Mac, it will look something like this: 
+
+`Users/Jonathan/Documents/Stata-lab/`
+
+If you want to change the settings on your Mac to display the file path in your **Finder** window, follow [this link](https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868)
+
+To tell Stata that this is where I want it to look for my files, I'll use the `cd` (current directory) command in my do-file.
+
+```
+cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory
+```
+
+If successful, in the console I will see the following output:
+
+<blockquote>
+
+| **. `cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory`**
+|   `C:\Users\User\Documents\Recon\EOSE09\stata_files`
+
+You can call the help window by typing `help` into the console, and set your Stata version for compatability reasons with the `version` command, like so:
+
+```
+help // Stata's help function; cf. also the web or Statalist
+version 16.1 // version control
+```
+
+## Importing the Roses-Wolf dataset from Excel into Stata
+
+At the moment, the database we want to use to draw out maps.

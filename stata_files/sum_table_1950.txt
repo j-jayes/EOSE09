@@ -1,0 +1,5 @@
+		(1)	(2)	(3)
+VARIABLES	LABELS	N	mean	sd
+				
+regional_gdp_cap_1990	Regional GDP per Capita in 1990 International Dollars	172	4,514	1,867
+				
