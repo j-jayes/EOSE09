@@ -77,6 +77,22 @@
 
 \KOMAoption{captions}{tableheading}
 \makeatletter
+\@ifpackageloaded{tcolorbox}{}{\usepackage[many]{tcolorbox}}
+\@ifpackageloaded{fontawesome5}{}{\usepackage{fontawesome5}}
+\definecolor{quarto-callout-color}{HTML}{909090}
+\definecolor{quarto-callout-note-color}{HTML}{0758E5}
+\definecolor{quarto-callout-important-color}{HTML}{CC1914}
+\definecolor{quarto-callout-warning-color}{HTML}{EB9113}
+\definecolor{quarto-callout-tip-color}{HTML}{00A047}
+\definecolor{quarto-callout-caution-color}{HTML}{FC5300}
+\definecolor{quarto-callout-color-frame}{HTML}{acacac}
+\definecolor{quarto-callout-note-color-frame}{HTML}{4582ec}
+\definecolor{quarto-callout-important-color-frame}{HTML}{d9534f}
+\definecolor{quarto-callout-warning-color-frame}{HTML}{f0ad4e}
+\definecolor{quarto-callout-tip-color-frame}{HTML}{02b875}
+\definecolor{quarto-callout-caution-color-frame}{HTML}{fd7e14}
+\makeatother
+\makeatletter
 \makeatother
 \makeatletter
 \makeatother
@@ -134,7 +150,8 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \urlstyle{same} % disable monospaced font for URLs
 \hypersetup{
-  pdftitle={Stata Lab 1},
+  pdftitle={EOSEO9 Regiaonl Economics: Stata Lab 1 Mapping Growth},
+  pdfauthor={Vinzent Ostermeyer, adapted Jonathan Jayes},
   colorlinks=true,
   linkcolor={blue},
   filecolor={Maroon},
@@ -142,30 +159,51 @@
   urlcolor={Blue},
   pdfcreator={LaTeX via pandoc}}
 
-\title{Stata Lab 1}
-\author{}
+\title{EOSEO9 Regiaonl Economics: Stata Lab 1 Mapping Growth}
+\author{Vinzent Ostermeyer, adapted Jonathan Jayes}
 \date{}
 
 \begin{document}
 \maketitle
-\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, sharp corners, enhanced, borderline west={3pt}{0pt}{shadecolor}, frame hidden, interior hidden, boxrule=0pt]}{\end{tcolorbox}}\fi
+\ifdefined\Shaded\renewenvironment{Shaded}{\begin{tcolorbox}[breakable, sharp corners, boxrule=0pt, borderline west={3pt}{0pt}{shadecolor}, interior hidden, enhanced, frame hidden]}{\end{tcolorbox}}\fi
 
 \hypertarget{purpose}{%
 \subsection{Purpose}\label{purpose}}
 
+One goal of this course is to teach students how to identify a good map
+-- one which is clear, informative and attractive -- and familiarise
+students with the commands which allow the creation of these maps in
+Stata.
+
+In addition, your lab paper (due March 3rd) requires that you include at
+least 6 maps, so it is worth concentrating in the labs and making use of
+these resources.
+
 This document is intended to allow you to keep up with the Stata Lab 1
 that we will work through in class.
+
+It will include the commands the we use and the output, as well as some
+hints and tips that will be useful during your projects, I hope.
+
+\hypertarget{getting-started}{%
+\subsection{Getting started}\label{getting-started}}
+
+Given that you have encountered Stata previously in your studies, I will
+not spend undue time explaining the basics. If you want to brush up on
+Stata's syntax, I reccomend having a look at
+\href{https://github.com/j-jayes/EOSE09/blob/b8444dd95783f4434ab63c4ad28b0f3033d4fd0a/resources/StataTutorial.pdf}{these
+slides} from Oscar Torres-Reyna, or
+\href{https://www.youtube.com/watch?v=oXsPgQe-aqs\&ab_channel=SebastianWaiEcon}{this
+set of Youtube videos} From Sebastian Wai.
 
 \hypertarget{install-additional-programs-and-set-up}{%
 \subsubsection{Install additional programs and
 set-up}\label{install-additional-programs-and-set-up}}
 
 First we need to install the packages in Stata that we will make use of.
+Please do this before our lab session in order to save time.
 
 We use the \texttt{ssc\ install} command, as follows:
-
-To run do-files click the ``run-button'' or highlight the lines of code
-and hit ctrl + D (Windows) or shift + cmd + D (Mac)
 
 \begin{verbatim}
 ssc install spmap, replace
@@ -179,12 +217,89 @@ ssc install egenmore, replace
 ssc install outreg2, replace
 \end{verbatim}
 
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, colbacktitle=quarto-callout-note-color!10!white, title=\textcolor{quarto-callout-note-color}{\faInfo}\hspace{0.5em}{Note}, opacityback=0, opacitybacktitle=0.6, colback=white, leftrule=.75mm, bottomtitle=1mm, breakable, rightrule=.15mm, arc=.35mm, titlerule=0mm, colframe=quarto-callout-note-color-frame, toprule=.15mm, bottomrule=.15mm, left=2mm, coltitle=black]
+
+To run do-files click the ``run-button'' or highlight the lines of code
+and hit ctrl + D (Windows) or shift + cmd + D (Mac)
+
+\end{tcolorbox}
+
 Running the command should produce output in the console that looks like
 this:
 
-. ssc install geo2xy, replace checking geo2xy consistency and verifying
-not already installed\ldots{} installing into c:\ado\plus...
-installation complete.
+\textbf{. ssc install geo2xy, replace}\\
+\hspace*{0.333em}\hspace*{0.333em}\texttt{checking\ geo2xy\ consistency\ and\ verifying\ not\ already\ installed...}\\
+\hspace*{0.333em}\hspace*{0.333em}\texttt{installing\ into\ c:\textbackslash{}ado\textbackslash{}plus\textbackslash{}...\ installation\ complete.}\\
+\hspace*{0.333em}\hspace*{0.333em}\texttt{...}
+
+\begin{tcolorbox}[enhanced jigsaw, toptitle=1mm, colbacktitle=quarto-callout-tip-color!10!white, title=\textcolor{quarto-callout-tip-color}{\faLightbulb}\hspace{0.5em}{always comment your code}, opacityback=0, opacitybacktitle=0.6, colback=white, leftrule=.75mm, bottomtitle=1mm, breakable, rightrule=.15mm, arc=.35mm, titlerule=0mm, colframe=quarto-callout-tip-color-frame, toprule=.15mm, bottomrule=.15mm, left=2mm, coltitle=black]
+
+In Stata you can comment your code in one line
+
+\texttt{//\ like\ so}
+
+Or if you want to write a longer string
+
+\texttt{/*You\ can\ put\ your\ longer\ string\ of\ text\ inside\ a\ set\ of\ slashes\ and\ stars*/}
+
+\end{tcolorbox}
+
+\hypertarget{setting-a-directory}{%
+\paragraph{Setting a directory}\label{setting-a-directory}}
+
+It is useful to put all of your work inside a specific file directory.
+This way, Stata knows where to look for your files and where to save
+output, like regression tables.
+
+The path to my folder where I have the files for this lab is:
+
+\texttt{C:/Users/User/Documents/Recon/EOSE09/stata\_files/}
+
+If you have a Mac, it will look something like this:
+
+\texttt{Users/Jonathan/Documents/Stata-lab/}
+
+If you want to change the settings on your Mac to display the file path
+in your \textbf{Finder} window, follow
+\href{https://www.lifewire.com/use-macs-hidden-finder-path-bar-2260868}{this
+link}.
+
+To tell Stata that this is where I want it to look for my files, I'll
+use the \texttt{cd} (current directory) command in my do-file.
+
+\begin{verbatim}
+cd "C:/Users/User/Documents/Recon/EOSE09/stata_files/" // set your directory
+\end{verbatim}
+
+If successful, in the console I will see the following output:
+
+\textbf{.
+\texttt{cd\ "C:/Users/User/Documents/Recon/EOSE09/stata\_files/"\ //\ set\ your\ directory}}\\
+\hspace*{0.333em}\hspace*{0.333em}\texttt{C:\textbackslash{}Users\textbackslash{}User\textbackslash{}Documents\textbackslash{}Recon\textbackslash{}EOSE09\textbackslash{}stata\_files}
+
+You can call the help window by typing \texttt{help} into the console,
+and set your Stata version for compatability reasons with the
+\texttt{version} command, like so:
+
+\begin{verbatim}
+help // Stata's help function; cf. also the web or Statalist
+version 16.1 // version control
+\end{verbatim}
+
+\hypertarget{importing-the-roses-wolf-dataset-from-excel-into-stata}{%
+\subsection{Importing the Roses-Wolf dataset from Excel into
+Stata}\label{importing-the-roses-wolf-dataset-from-excel-into-stata}}
+
+At the moment, the database we want to use to draw out maps is in an
+excel sheet.
+
+It has many tabs, and some lines are filled with headings before the
+data begins, as show here:
+
+\begin{verbatim}
+import excel using RosesWolf_RegionalGDP_v6.xlsx, sheet("A1 Regional GDP") firstrow cellrange(A6:O179) clear // import Excel sheet
+rename (D E F G H I J K L M N O) (year_1900 year_1910 year_1925 year_1938 year_1950 year_1960 year_1970 year_1980 year_1990 year_2000 year_2010 year_2015)
+\end{verbatim}
 
 
 

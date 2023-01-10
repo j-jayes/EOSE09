@@ -150,6 +150,12 @@ version 16.1 // version control</code></pre>
 <section id="importing-the-roses-wolf-dataset-from-excel-into-stata" class="level2">
 <h2 class="anchored" data-anchor-id="importing-the-roses-wolf-dataset-from-excel-into-stata">Importing the Roses-Wolf dataset from Excel into Stata</h2>
 <p>At the moment, the database we want to use to draw out maps is in an excel sheet.</p>
+<p>It has many tabs, and some lines are filled with headings before the data begins, as show here:</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="https://github.com/j-jayes/EOSE09/raw/3213d759c1b6fc3f20be69fde0e75d3f3f7aabf4/images/excel_format.PNG" class="img-fluid"></p>
+</div>
+</div>
 <pre><code>import excel using RosesWolf_RegionalGDP_v6.xlsx, sheet("A1 Regional GDP") firstrow cellrange(A6:O179) clear // import Excel sheet
 rename (D E F G H I J K L M N O) (year_1900 year_1910 year_1925 year_1938 year_1950 year_1960 year_1970 year_1980 year_1990 year_2000 year_2010 year_2015)</code></pre>
 </section>
